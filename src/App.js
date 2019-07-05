@@ -58,7 +58,7 @@ class App extends React.Component {
         <header className="App-header">
           <form>
             <input
-              type="texta"
+              type="text"
               onChange={this.onSearchChange}
               value={this.state.searchTerm}
             />
