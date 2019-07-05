@@ -8,8 +8,6 @@ const PARAM_SEARCH = "query=";
 
 const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}`;
 
-console.log(url);
-
 const list = [
   {
     title: "React",
