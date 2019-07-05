@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import "./App.css";
 
 const list = [
@@ -20,14 +20,44 @@ const list = [
   }
 ];
 
-// function isSearched(searchTerm) {
-//   return function(item) {
-//     return item.title.toLowerCase().includes(searchTerm.toLowerCase());
-//   };
-// }
-
 const isSearched = searchTerm => item =>
   item.title.toLowerCase().includes(searchTerm.toLowerCase());
+
+class Search extends Component {
+  render() {
+    const { value, onChange } = this.props;
+    return (
+      <form>
+        <input type="text" value={value} onChange={onChange} />
+      </form>
+    );
+  }
+}
+
+class Table extends Component {
+  render() {
+    const { list, pattern, onDismiss } = this.props;
+    return (
+      <div>
+        {list.filter(isSearched(pattern)).map(item => (
+          <div key={item.objectID}>
+            <span>
+              <a href={item.url}>{item.title}</a>
+            </span>
+            <span>{item.author}</span>
+            <span>{item.num_comments}</span>
+            <span>{item.points}</span>
+            <span>
+              <button onClick={() => onDismiss(item.objectID)} type="button">
+                Dismiss
+              </button>
+            </span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+}
 
 class App extends React.Component {
   constructor(props) {
@@ -56,30 +86,8 @@ class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
-          <form>
-            <input
-              type="text"
-              onChange={this.onSearchChange}
-              value={this.state.searchTerm}
-            />
-          </form>
-
-          {list.filter(isSearched(searchTerm)).map(item => (
-            <div key={item.objectID}>
-              <span>
-                <a href={item.url}> {item.title}</a>
-              </span>
-              <span> {item.author}</span>
-              <span>{item.num_comments}</span>
-              <span>{item.points} </span>
-              <button
-                onClick={() => this.onDismiss(item.objectID)}
-                type="button"
-              >
-                Dismiss
-              </button>
-            </div>
-          ))}
+          <Search value={searchTerm} onChange={this.onSearchChange} />
+          <Table list={list} pattern={searchTerm} onDismiss={this.onDismiss} />
         </header>
       </div>
     );
