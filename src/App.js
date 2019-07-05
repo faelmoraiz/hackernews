@@ -52,6 +52,7 @@ class App extends React.Component {
   };
 
   render() {
+    const { searchTerm, list } = this.state;
     return (
       <div className="App">
         <header className="App-header">
@@ -63,7 +64,7 @@ class App extends React.Component {
             />
           </form>
 
-          {this.state.list.map(item => (
+          {list.filter(isSearched(searchTerm)).map(item => (
             <div key={item.objectID}>
               <span>
                 <a href={item.url}> {item.title}</a>
