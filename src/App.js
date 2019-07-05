@@ -22,11 +22,28 @@ const list = [
 ];
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      list
+    };
+
+    this.onDismiss = this.onDismiss.bind(this);
+  }
+
+  onDismiss(id) {
+    const isNotId = item => item.objectID !== id;
+    const updateList = this.state.list.filter(isNotId);
+    this.setState({ list: updateList });
+  }
+
   render() {
     const dados = {
       nome: "Rafael",
       sobrenome: "Morais"
     };
+
     return (
       <div className="App">
         <header className="App-header">
@@ -36,18 +53,22 @@ class App extends React.Component {
               Welcome {dados.nome} {dados.sobrenome}
             </code>
           </p>
-          {list.map(function(item) {
-            return (
-              <div key={item.objectID}>
-                <span> {item.author}</span>
-                <span>{item.num_comments}</span>
-                <span>{item.points}</span>
-                <span>
-                  <a href={item.url}> {item.title}</a>
-                </span>
-              </div>
-            );
-          })}
+          {this.state.list.map(item => (
+            <div key={item.objectID}>
+              <span>
+                <a href={item.url}> {item.title}</a>
+              </span>
+              <span> {item.author}</span>
+              <span>{item.num_comments}</span>
+              <span>{item.points} </span>
+              <button
+                onClick={() => this.onDismiss(item.objectID)}
+                type="button"
+              >
+                Dismiss
+              </button>
+            </div>
+          ))}
         </header>
       </div>
     );
