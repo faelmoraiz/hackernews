@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 
 const list = [
@@ -21,12 +20,22 @@ const list = [
   }
 ];
 
+// function isSearched(searchTerm) {
+//   return function(item) {
+//     return item.title.toLowerCase().includes(searchTerm.toLowerCase());
+//   };
+// }
+
+const isSearched = searchTerm => item =>
+  item.title.toLowerCase().includes(searchTerm.toLowerCase());
+
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      list
+      list,
+      searchTerm: ""
     };
 
     this.onDismiss = this.onDismiss.bind(this);
@@ -38,21 +47,22 @@ class App extends React.Component {
     this.setState({ list: updateList });
   }
 
-  render() {
-    const dados = {
-      nome: "Rafael",
-      sobrenome: "Morais"
-    };
+  onSearchChange = e => {
+    this.setState({ searchTerm: e.target.value });
+  };
 
+  render() {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            <code>
-              Welcome {dados.nome} {dados.sobrenome}
-            </code>
-          </p>
+          <form>
+            <input
+              type="text"
+              onChange={this.onSearchChange}
+              value={this.state.searchTerm}
+            />
+          </form>
+
           {this.state.list.map(item => (
             <div key={item.objectID}>
               <span>
